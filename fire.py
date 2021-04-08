@@ -1,26 +1,38 @@
 import threading
-class Cub:
-    def __init__(self, num):
-        self.num = num
-        print("Un cub cu latura de {}".format(self.num))
-    def calc_volum(self):
-        return "Volumul cubului = {}".format(self.num * self.num * self.num)
-    def lenght_lat(self):
-        self.lenght = self.num * 12
-        return "Lungimea totala a tuturor laturilor = {}".format(self.lenght)
-    def main(cub):
-        if __name__ == "__main__":
-            t1 = threading.Thread(target=calc_volum(), args=())
-            t2 = threading.Thread(target=lenght_lat(), args=())
+class Cube:
 
-            t2.start()
-            t2.join()
-            t1.start()
-            t1.join()
-cub_1 = Cub(10)
-print(cub_1.lenght_lat())
-print(cub_1.calc_volum())
-cub_2 = Cub(12)
-print(cub_2.lenght_lat())
-print(cub_2.calc_volum())
-print("Finalizare!")
+    def __init__(self, latura):
+        self.latura = latura
+        self.lungime = None
+        self.volum = None
+        print("Un cub cu latura de: ", self.latura, "CM este:")
+
+    def volume(self):
+        self.volum = self.latura * self. latura * self.latura
+
+    def totalLungime(self):
+        self.lungime = 12 * self.latura
+
+if __name__ == "__main__":
+    cub_1 = Cube(10)
+    cub_2 = Cube(15)
+
+    threads_list = list()
+
+    cub_list = [cub_1, cub_2]
+
+    for cub_elem in cub_list:
+         t1 = threading.Thread(target=cub_elem.volume(), args=())
+         t2 = threading.Thread(target=cub_elem.totalLungime(), args=())
+
+         t1.start()
+         t2.start()
+         threads_list.append(t2)
+         threads_list.append(t1)
+         
+    for t in threads_list:
+         t.join()
+     
+    for cub_elem in cub_list: 
+         print("Lungimea tuturor laturileor: " + str(cub_elem.lungime))
+         print("Volumul cubului: " + str(cub_elem.volum))
